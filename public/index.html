@@ -1,0 +1,67 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>WebRTC Direct Connection Testing</title>
+    <link rel="stylesheet" href="leaflet.css"/>
+    <script src="leaflet.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="volunteer.js"></script>
+    <style>
+      .button {
+        background-color: white;
+        color: black;
+        border: 2px solid #4CAF50; /* Green */
+        text-align: center;
+        text-decoration: none;
+        font-size: 16px;
+      }
+      .button:hover {
+        background-color: #4CAF50; /* Green */
+        color: white;
+      }
+      .buttonHold {
+        background-color: #4CAF50; /* Green */
+        color: white;
+      }
+      .participant {
+        text-align: center;
+      }
+      #mapid { height: 300px; width: 600px; }
+      #connectivity {
+        height: 600px;
+        width: 600px; 
+      }
+    </style>
+  </head>
+  <body>
+    <h1>WebRTC Direct Connection Testing</h1>
+     <button class='button' id='connect-btn' onclick='volunteer.connect()' >Connect</button>
+    <h2 id='infoTitle' >Your Information</h2>
+    <form>
+      Pseudonym: <input id='nameInput' value=''>
+      <p></p>
+      Latitude: <input id='latInput' value='0'>
+      <p></p>
+      Longitude: <input id='longInput' value='0'>
+      <p></p>
+      IP Address: <div id='ipAddress'></div>
+    </form>
+    <!-- <h2>Other Participants</h2> --!>
+    <div id='participants'></div>
+    <h2>Location of All Participants</h2>
+    <div id="mapid"></div>
+    <h2>Current Connectivity</h2>
+    <svg id="connectivity"></svg>
+    <h2>Events Log</h2>
+    <textarea id='events-log' cols='80' rows='40'></textarea>
+  </body>
+  <script>
+    var MAP = L.map('mapid', {
+      zoomControl: false
+    }).setView([51.505, -0.09], 1)
+    L.tileLayer(document.URL + 'tiles/v4/{id}/{z}/{x}/{y}.png', {
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        id: 'mapbox.streets'
+    }).addTo(MAP);
+  </script>
+</html>

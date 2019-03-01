@@ -1,0 +1,28 @@
+{
+  "name": "webrtc-connection-testing",
+  "version": "1.0.0",
+  "description": "Test server for determining the direct connectivity between WebRTC participants.",
+  "main": "src/index.js",
+  "scripts": {
+    "postinstall": "browserify src/volunteer.js -r -s volunteer -o public/volunteer.js",
+    "start": "node src/index.js",
+    "watch": "watch 'npm run postinstall' --interval=5 --wait=5 --ignoreDotFiles src",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "WebRTC"
+  ],
+  "author": "Erick Lavoie",
+  "license": "MIT",
+  "dependencies": {
+    "browserify": "^16.2.3",
+    "debug": "^4.1.1",
+    "express": "^4.16.4",
+    "simple-peer": "^9.2.1",
+    "simple-websocket": "^7.2.0",
+    "ws": "^6.1.4"
+  },
+  "devDependencies": {
+    "watch": "^1.0.2"
+  }
+}
