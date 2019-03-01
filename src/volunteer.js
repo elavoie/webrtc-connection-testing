@@ -345,7 +345,10 @@ function connect () {
     socket.terminate()
     socket = null
   }
-  var socket = new Socket('ws://localhost:8080')
+
+  var protocol = location.protocol === 'http:' ? 'ws:' : 'wss:'
+  var host = location.host
+  var socket = new Socket(protocol + '//' + host)
   socket.on('connect', function () {
     console.log('connected!')
     document.getElementById('connect-btn').textContent = 'Connected'
