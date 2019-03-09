@@ -1,5 +1,6 @@
 var WebSocket = require('ws')
 var http = require('http')
+var os = require('os')
 var debug = require('debug')
 var log = debug('webrtc-testing')
 var express = require('express')
@@ -19,6 +20,31 @@ function randomInt () {
   seed = ((seed + 0xfd7046c5) + (seed << 3)) & 0xffffffff
   seed = ((seed ^ 0xb55a4f09) ^ (seed >>> 16)) & 0xffffffff
   return seed
+}
+
+function getIPAddresses () {
+  var ifaces = os.networkInterfaces()
+  var addresses = []
+
+  Object.keys(ifaces).forEach(function (ifname) {
+    var alias = 0
+
+    ifaces[ifname].forEach(function (iface) {
+      if (iface.family !== 'IPv4' || iface.internal !== false) {
+        // skip over internal (i.e. 127.0.0.1) and non-ipv4 addresses
+        return
+      }
+
+      if (alias >= 1) {
+        // this single interface has multiple ipv4 addresses
+        addresses.push(iface.address)
+      } else {
+        // this interface has only one ipv4 adress
+        addresses.push(iface.address)
+      }
+    })
+  })
+  return addresses
 }
 
 function getParticipants () {
@@ -79,7 +105,9 @@ var participant = { }
 app.use(express.static('public'))
 
 var httpServer = app.listen(PORT, function () {
-  console.error('server running on port ' + PORT)
+  getIPAddresses().forEach(function (addr) {
+    console.error('server accessible at ' + addr + ':' + PORT)
+  })
 })
 
 var wss = new WebSocket.Server({ server: httpServer })
@@ -162,3 +190,4 @@ var heartbeat = setInterval(function ping() {
     }
   }
 }, INTERVAL)
+
