@@ -18,7 +18,7 @@
     "browserify": "^16.2.3",
     "debug": "^4.1.1",
     "express": "^4.16.4",
-    "simple-peer": "^9.2.1",
+    "simple-peer": "^6.4.4",
     "simple-websocket": "^7.2.0",
     "ws": "^6.1.4"
   },
