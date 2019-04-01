@@ -114,7 +114,6 @@ var wss = new WebSocket.Server({ server: httpServer })
 
 wss.on('connection' , function (ws, req) {
   var id = (randomInt() >>> 1).toString(16)
-
   ws.id = id
 
   participant[id] = {

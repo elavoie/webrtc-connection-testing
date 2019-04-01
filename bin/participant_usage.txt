@@ -1,0 +1,9 @@
+participant URL [OPTIONS]
+
+Connect to URL and try to establish WebRTC connections with other participants.
+
+   --wrtc                 (default=false)  
+                          Use the 'wrtc' package to provide WebRTC connectivity.
+
+   --electron-webrtc      (default=true)  
+                          Use the 'electron-webrtc' package to provide WebRTC connectivity. 

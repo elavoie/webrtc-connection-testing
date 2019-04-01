@@ -1,11 +1,12 @@
 {
   "name": "webrtc-connection-testing",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Test server for determining the direct connectivity between WebRTC participants.",
-  "main": "src/index.js",
+  "main": "src/server.js",
   "scripts": {
-    "postinstall": "browserify src/volunteer.js -r -s volunteer -o public/volunteer.js",
-    "start": "node src/index.js",
+    "postinstall": "browserify src/browser.js -r -s participant -o public/participant.js",
+    "start": "node src/server.js",
+    "participant": "node bin/participant http://localhost:8080",
     "watch": "watch 'npm run postinstall' --interval=5 --wait=5 --ignoreDotFiles src",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -17,9 +18,11 @@
   "dependencies": {
     "browserify": "^16.2.3",
     "debug": "^4.1.1",
+    "electron-webrtc": "^0.3.0",
     "express": "^4.16.4",
     "simple-peer": "^6.4.4",
     "simple-websocket": "^7.2.0",
+    "wrtc": "^0.3.7",
     "ws": "^6.1.4"
   },
   "devDependencies": {

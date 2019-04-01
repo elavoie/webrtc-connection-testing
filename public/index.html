@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="leaflet.css"/>
     <script src="leaflet.js"></script>
     <script src="https://d3js.org/d3.v5.min.js"></script>
-    <script src="volunteer.js"></script>
+    <script src="participant.js"></script>
     <style>
       .button {
         background-color: white;
@@ -39,7 +39,7 @@
      <p>Your browser will ask for your location using the geolocation API of modern browsers to give
         provide an idea of the origin of participants. You can manually supply a latitude and longitude
         if you are worried about the precision of the location provided by browsers.</p>
-     <button class='button' id='connect-btn' onclick='volunteer.connect()' >Connect</button>
+     <button class='button' id='connect-btn' onclick='participant.connect()' >Connect</button>
     <h2 id='infoTitle' >Your Information</h2>
     <form>
       Pseudonym: <input id='nameInput' value=''>
@@ -69,7 +69,7 @@
     }).addTo(MAP);
 
     if (location.href.indexOf('#connect') > -1) {
-      volunteer.connect()
+      participant.connect()
     }
   </script>
 </html>

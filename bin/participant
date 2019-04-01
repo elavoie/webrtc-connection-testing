@@ -1,0 +1,32 @@
+#!/usr/bin/env node
+var argv = require('minimist')(process.argv)
+var electronWebRTC = require('electron-webrtc')
+var Participant = require('../src/participant.js')
+var fs = require('fs')
+
+if (argv._.length < 3 || argv.help || argv.h) {
+  console.error(fs.readFileSync(__dirname + '/participant_usage.txt').toString())
+  process.exit(1)
+}
+
+var name
+if (argv['wrtc']) {
+  var wrtc = require('wrtc')
+  name = 'wrtc'
+  console.error('WARNING: wrtc package may fail because it is not fully supported yet.')
+} else if (argv['electron-webrtc'] || 
+           (!argv['electron-webrtc'] && !argv['wrtc'])) {
+  var wrtc = electronWebRTC({ headless: false })
+  name = 'electron-wrtc'
+}
+
+var url = argv._[2]
+var protocol = url.split('://')[0]
+var host = url.split('://')[1]
+
+var p = new Participant({
+  host: host || url,
+  protocol: protocol === 'https' ? 'wss:' : 'ws:',
+  name: name,
+  wrtc: wrtc
+})
