@@ -208,7 +208,12 @@ function connect () {
         if (myConnections[remoteId]) return 
 
         var initiator = participant.logIndex < initIndex
-        var p = new Peer({ initiator: initiator, trickle: true })
+        var p = new Peer({ 
+          initiator: initiator,
+          config: {
+            iceServers: { url: 'stun:stun.l.google.com:19302' }
+          }
+        })
         myConnections[remoteId] = p
         socket.send(JSON.stringify({
           type: 'webrtc-connection-attempt',
