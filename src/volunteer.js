@@ -211,7 +211,9 @@ function connect () {
         var p = new Peer({ 
           initiator: initiator,
           config: {
-            iceServers: { url: 'stun:stun.l.google.com:19302' }
+            iceServers: [{ 
+              url: 'stun:stun.l.google.com:19302' 
+            }]
           }
         })
         myConnections[remoteId] = p
