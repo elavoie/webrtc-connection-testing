@@ -2,12 +2,7 @@ var Peer = require('simple-peer')
 var Socket = require('simple-websocket')
 var debug = require('debug')
 var log = debug('webrtc-connection-testing')
-
-var myId = null
-var eventLog = []
-var myConnections = {}
-var initIndex = 0
-var pendingSignals = {}
+var EE = require('events')
 
 module.exports = function Participant (opts) {
   var opts = opts || {}
@@ -15,8 +10,27 @@ module.exports = function Participant (opts) {
   opts.protocol = opts.protocol || 'ws:'
   opts.name = opts.name || ''
 
+  if (typeof opts.statusRequest === 'undefined') {
+    opts.statusRequest = function () {}
+  } else if (typeof opts.statusRequest !== 'function') {
+    throw new Error('Invalid statusRequest argument, expecting function')
+  }
+
   if (typeof navigator === 'undefined' && !opts.wrtc) {
     throw new Error('opts.wrtc required outside a browser')
+  }
+
+  var participant = new EE()
+  var myId = null
+  var eventLog = []
+  var myConnections = {}
+  var initIndex = 0
+  var pendingSignals = {}
+  var status = {
+    id: null,
+    name: '',
+    latitude: 0,
+    longitude: 0
   }
 
   function computeLatestState (log) {
@@ -189,12 +203,14 @@ module.exports = function Participant (opts) {
         initIndex = eventLog.length
         var latestState = computeLatestState(eventLog)
         openWebRTCChannels(latestState.participants)
+        participant.emit('init', id, msg.ip, latestState)
       } else if (msg.type === 'log-update') {
         for (var i = 0; i < msg.update.length; ++i) {
           eventLog.push(msg.update[i])
         }
         var latestState = computeLatestState(eventLog)
         openWebRTCChannels(latestState.participants)
+        participant.emit('log-update', latestState)
       } else if (msg.type === 'webrtc-connection-signal') {
         if (!myConnections[msg.origin]) {
           if (!pendingSignals[msg.origin]) {
@@ -226,6 +242,7 @@ module.exports = function Participant (opts) {
     socket.on('connect', function () {
       console.log('connected!')
       socketConnected = true
+      participant.emit('connect')
     })
     
     socket.on('data', function (data) {
@@ -235,11 +252,13 @@ module.exports = function Participant (opts) {
     socket.on('close', function () {
       console.log('socket closed')
       clearInterval(statusInterval)
+      participant.emit('close')
     })
 
     socket.on('error', function (err) {
       console.log('socket error: ' + err)
       clearInterval(statusInterval)
+      participant.emit('error', err)
     })
 
     function sendStatus () {
@@ -249,12 +268,22 @@ module.exports = function Participant (opts) {
           id: myId,
           name: opts.name
         }
+        opts.statusRequest(status)
         log('sending status: ' + JSON.stringify(status))
         socket.send(JSON.stringify(status))
       }
+      participant.emit('status', eventLog)
     }
     statusInterval = setInterval(sendStatus, 5000)
   }
 
+  participant.setStatus = function (_status) {
+    _status = _status || {}
+    status.name = _status.name || ''
+    status.latitude = _status.latitude || 0
+    status.longitude = _status.longitude || 0
+  }
+
   connect()
+  return participant
 }
