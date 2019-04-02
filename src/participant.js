@@ -121,7 +121,7 @@ module.exports = function Participant (opts) {
           })
 
           p.on('signal', function (data) {
-            log('SIGNAL from ' + myId + ' to ' + remoteId + ' : ' + data)
+            log('SIGNAL from ' + myId + ' to ' + remoteId + ' : ' + JSON.stringify(data))
             socket.send(JSON.stringify({
               type: 'webrtc-connection-signal',
               origin: myId,
@@ -217,10 +217,10 @@ module.exports = function Participant (opts) {
             pendingSignals[msg.origin] = []
           } 
 
-          log('SIGNAL deferred from ' + msg.origin)
+          log('SIGNAL deferred from ' + msg.origin + ': ' + JSON.stringify(msg.signal))
           pendingSignals[msg.origin].push(msg.signal)
         } else {
-          log('SIGNAL received from ' + msg.origin)
+          log('SIGNAL received from ' + msg.origin + ': ' + JSON.stringify(msg.signal))
           myConnections[msg.origin].signal(msg.signal)
         }
       } else {
