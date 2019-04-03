@@ -68,6 +68,9 @@
         id: 'mapbox.streets'
     }).addTo(MAP);
 
+    // Enable logging on the console
+    localStorage.debug = 'webrtc-connection-testing'
+
     if (location.href.indexOf('#connect') > -1) {
       participant.connect()
     }
