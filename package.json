@@ -1,6 +1,6 @@
 {
   "name": "webrtc-connection-testing",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "Test server for determining the direct connectivity between WebRTC participants.",
   "main": "src/server.js",
   "scripts": {
