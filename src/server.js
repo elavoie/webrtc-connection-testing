@@ -100,6 +100,29 @@ function dispatch (data) {
 
 }
 
+function broadcastUpdates () {
+  for (var id in participant) {
+    if (frontier[id] < eventLog.length) {
+      var newFrontier = eventLog.length
+      participant[id].ws.send(JSON.stringify({
+        type: 'log-update',
+        update: eventLog.slice(frontier[id])
+      }), function (err) {
+        if (err) {
+          log('participant[' + id + '] sending error: ' + err)
+          participant[id].ws.terminate()
+          delete participant[id]
+          eventLog.push({
+            type: 'participant-disconnected',
+            id: id
+          })
+        }
+      })
+      frontier[id] = newFrontier
+    }
+  }
+}
+
 var participant = { }
 
 app.use(express.static('public'))
@@ -146,6 +169,7 @@ wss.on('connection' , function (ws, req) {
     eventLog: eventLog.slice()
   }))
   ws.on('message', dispatch)
+  broadcastUpdates()
 })
 
 // Heartbeat
@@ -168,25 +192,6 @@ var heartbeat = setInterval(function ping() {
       participant[id].ws.ping(function () {})
     }
   }
-  for (var id in participant) {
-    if (frontier[id] < eventLog.length) {
-      var newFrontier = eventLog.length
-      participant[id].ws.send(JSON.stringify({
-        type: 'log-update',
-        update: eventLog.slice(frontier[id])
-      }), function (err) {
-        if (err) {
-          log('participant[' + id + '] sending error: ' + err)
-          participant[id].ws.terminate()
-          delete participant[id]
-          eventLog.push({
-            type: 'participant-disconnected',
-            id: id
-          })
-        }
-      })
-      frontier[id] = newFrontier
-    }
-  }
+  broadcastUpdates()
 }, INTERVAL)
 

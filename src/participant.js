@@ -202,6 +202,7 @@ module.exports = function Participant (opts) {
         eventLog = msg.eventLog
         initIndex = eventLog.length
         var latestState = computeLatestState(eventLog)
+        openWebRTCChannels(latestState.participants)
         participant.emit('init', id, msg.ip, latestState)
       } else if (msg.type === 'log-update') {
         for (var i = 0; i < msg.update.length; ++i) {
