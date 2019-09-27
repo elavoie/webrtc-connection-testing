@@ -9,12 +9,12 @@ All participants get a real-time view of connections and a copy of the event log
 
 Open https://webrtc-connection-testing.herokuapp.com/ in as many browsers as you want to test. In each, type a pseudonym to identify each instance, then click "Connect".
 
-To connect from the commandline, similar to using [pando-computing](https://github.com/elavoie/pando-computing) with WebRTC do:
+To connect from the commandline, similar to using [pando-computing](https://github.com/elavoie/pando-computing) with WebRTC, do:
 ````
     git clone git@github.com:elavoie/webrtc-connection-testing
     cd webrtc-connection-testing
     npm install
-    bin/participant 
+    bin/participant http://webrtc-connection-testing.herokuapp.com
 ````
 If a line appears between two instances under "Current Connectivity", then a WebRTC connection was successful.
 
