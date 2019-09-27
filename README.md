@@ -7,7 +7,7 @@ All participants get a real-time view of connections and a copy of the event log
 
 ## Quick Start
 
-Open ````https://webrtc-connection-testing.herokuapp.com/```` in as many browsers as you want to test. In each, type a pseudonym to identify each instance, then click "Connect".
+Open https://webrtc-connection-testing.herokuapp.com/ in as many browsers as you want to test. In each, type a pseudonym to identify each instance, then click "Connect".
 
 To connect from the commandline, similar to using [pando-computing](https://github.com/elavoie/pando-computing) with WebRTC do:
 ````
