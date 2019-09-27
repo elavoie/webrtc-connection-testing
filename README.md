@@ -5,6 +5,27 @@ likelihood of connectivity between random participants on the Internet. It tries
 
 All participants get a real-time view of connections and a copy of the event log for offline analysis.
 
+## Quick Start
+
+Open ````https://webrtc-connection-testing.herokuapp.com/```` in as many browsers as you want to test. In each, type a pseudonym to identify each instance, then click "Connect".
+
+To connect from the commandline, similar to using [pando-computing](https://github.com/elavoie/pando-computing) with WebRTC do:
+````
+    git clone git@github.com:elavoie/webrtc-connection-testing
+    cd webrtc-connection-testing
+    npm install
+    bin/participant 
+````
+If a line appears between two instances under "Current Connectivity", then a WebRTC connection was successful.
+
+## Deploy your own server:
+````
+    git clone git@github.com:elavoie/webrtc-connection-testing
+    cd webrtc-connection-testing
+    npm install
+    npm start
+````
+
 ## Events
 
 Here is a list of events logged by the server.
